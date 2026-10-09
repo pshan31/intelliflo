@@ -1,0 +1,332 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title - IntelliFlo</title>
+    <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css">
+    
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <style>
+
+        .fullscreen {
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            background-color: #1e2b37;
+            color: white;
+            z-index: 1000;
+        }
+
+        .center {
+            position: absolute;
+            width: 500px;
+            text-align: center;
+            height: 50px;
+            top: 50%;
+            left: 50%;
+            margin-left: -250px; /* margin is -0.5 * dimension */
+            margin-top: -150px;
+            font-size: 80px;
+        }
+
+
+
+        .query-form {
+            padding: 20px;
+            border-bottom: 1px solid #ddd; /* Add border between query and results */
+        }
+
+        .form-control {
+            border-radius: 4px;
+        }
+
+        .btn-search {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+            border-radius: 4px;
+        }
+
+        .query-results {
+            padding: 20px;
+            border-radius: 0 0 8px 8px; /* Rounded corners only on bottom */
+        }
+
+            .query-results th {
+                background-color: #007bff; /* Header background color */
+                color: #fff; /* Header text color */
+            }
+
+        .datepicker {
+            z-index: 1051 !important;
+        }
+
+        .custom-range-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-range-inputs {
+            display: none;
+            margin-left: 10px;
+        }
+
+            .custom-range-inputs input {
+                width: 150px;
+            }
+
+        #ele b {
+            color: #6e9fa5 !important;
+        }
+
+        .visualization {
+            width: 100% !important;
+            height: 250px !important;
+        }
+
+        .pre-footer {
+            bottom:20px;
+            right: 100px;
+            position:absolute;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0px;
+            width: 100%;
+            padding: 15px 0;
+            background-color: #2f3c48;
+        }
+
+        .footer .container {
+            padding: 0px 20px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="fullscreen">
+        <div class="center"><span id="ele"></span></div>
+        <p class="pre-footer">Handcrafted with ❤️ by <a class="text-light" href="mailto:princeshan031@gmail.com"><b>Prince Shankushal</b></a></p>
+    </div>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/IntelliFlo/iui">Intelli<strong class="text-warning">Flo</strong></a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li><a class="nav-link" href="/IntelliFlo/iui">Search</a></li>
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <span class="text-light">Handcrafted with ❤️ by <a class="text-light" href="mailto:princeshan031@gmail.com"><b>Prince Shankushal</b></a></span>
+        </div>
+    </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/handlebars")
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
+    @RenderSection("scripts", required: false)
+
+    <script id="table-template" type="text/x-handlebars-template">
+        <table id="tblSearch" class="table table-striped table-bordered table-sm table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th width="50" scope="col"><i class="fa fa-info"></i></th>
+                    <th width="250" scope="col">Time</th>
+                    <th scope="col">Event</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </script>
+
+    <script id="row-template" type="text/x-handlebars-template">
+        <tr>
+            <td>»</td>
+            <td>{{date}}</td>
+            <td>
+                {{rawMessage}}
+                <div>
+                    {{#each tags}}
+                    <span class="mr-1 badge badge-primary">{{Key}} = {{Value}}</span>
+                    {{/each}}
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script>
+        var chart;
+        const ctx = document.getElementById('myChart');
+        $(document).ready(function () {
+            setTimeout(myFunction, 5000);
+            function myFunction() {
+                $(".fullscreen").hide();
+            }
+
+            //$('.datepicker').datepicker({
+            //    format: 'yyyy-mm-dd',
+            //    todayHighlight: true,
+            //    autoclose: true
+            //});
+
+            $('.custom-range').click(function () {
+                $('.custom-range-inputs').toggle();
+            });
+
+            var typed = new Typed('#ele', {
+                strings: ['Welcome to Intelli<b>Flo</b>'],
+                typeSpeed: 30,
+            });
+            $("#btnSearchNow").click(function () {
+                $("#tableDiv").html("");
+                Pace.track(function () {
+                    var data = {
+                        "query": $("#taSearch").val(),
+                        "fixedStr": "7000m",
+                        "startDate": "2024-01-01",
+                        "endDate": "2024-05-01"
+                    }
+
+                    $.ajax({
+                        url: 'https://localhost:44367/services/query/process',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify(data),
+                        success: function (response) {
+                            var source1 = document.getElementById("table-template").innerHTML;
+                            var template2 = Handlebars.compile(source1);
+                            $("#tableDiv").html(template2(null));
+
+                            $.each(response.LstQM, function (index, item) {
+                                var source = document.getElementById("row-template").innerHTML;
+                                var template = Handlebars.compile(source);
+                                var context = { date: item.Date, rawMessage: item.RawMessage, tags: item.Tags };
+
+                                var html = template(context);
+                                $("#table-body").append(html);
+                            });
+
+                            let table = new DataTable('#tblSearch');
+                            if (response.Visualization != null) {
+
+                                var datasets = [];
+                                var names = [];
+
+                                Object.keys(response.Visualization).forEach(key => {
+                                    names.push(key);
+                                    datasets.push({ labels: response.Visualization[key].map(x => x.Key), data: response.Visualization[key].map(x => x.Value) });
+                                });
+
+                                // Combine labels from all datasets
+                                var allLabels = [...new Set(datasets.flatMap(dataset => dataset.labels))];
+
+                                // Fill in data for each dataset using the combined labels
+                                var datasetsData = datasets.map(dataset => {
+                                    var labelIndexMap = {};
+                                    dataset.labels.forEach((label, index) => {
+                                        labelIndexMap[label] = index;
+                                    });
+                                    return allLabels.map(label => labelIndexMap[label] !== undefined ? dataset.data[labelIndexMap[label]] : null);
+                                });
+
+                                // Create dataset objects for Chart.js
+                                var chartDatasets = datasets.map((dataset, index) => ({
+                                    label: names[index],
+                                    data: datasetsData[index],
+                                    borderColor: getRandomColor(),
+                                    fill: true
+                                }));
+
+                                var data = {
+                                    labels: allLabels,
+                                    datasets: chartDatasets
+                                };
+
+                                if (chart != null)
+                                    chart.destroy();
+
+                                chart = new Chart(ctx, {
+                                    type: 'line',
+                                    data: data,
+                                    options: {
+                                        spanGaps: true,
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            x: {
+                                                type: 'time',
+                                                time: {
+                                                    parser: 'YYYY-MMDDTHH:mm:ssZZZ',
+                                                    tooltipFormat: 'YYYY-MMDDTHH:mm:ssZZZ',
+                                                    unit: 'minute'
+                                                },
+                                                title: {
+                                                    display: true,
+                                                    text: 'Time'
+                                                },
+                                                ticks: {
+                                                    autoSkip: false,
+                                                    maxRotation: 0,
+                                                    minRotation: 0,
+                                                    callback: function (value, index, values) {
+                                                        return index % 3 == 0 ? moment(value).format("DD MMM YY hh:mm:ss") : '';
+                                                    }
+                                                }
+                                            },
+                                            y: {
+                                                beginAtZero: true
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            // Handle any errors
+                            console.error('Error making POST request:', error);
+                        }
+                    });
+                });
+            });
+        });
+        // Function to generate random color
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+</body>
+</html>

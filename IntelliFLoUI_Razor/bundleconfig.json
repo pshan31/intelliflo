@@ -1,0 +1,44 @@
+[
+  {
+    "outputFileName": "wwwroot/css/bundle.css",
+    "inputFiles": [
+      "wwwroot/css/bootstrap.css",
+      "wwwroot/css/pace-theme-default.css",
+      "wwwroot/css/dataTables.dataTables.css",
+      "wwwroot/css/Site.css",
+      "wwwroot/css/flash.css",
+      "wwwroot/css/all.css",
+      "wwwroot/css/bootstrap-datepicker.css",
+      "wwwroot/css/sweetalert2.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/bundle.min.js",
+    "inputFiles": [
+      "wwwroot/js/jquery-3.4.1.js",
+      "wwwroot/js/bootstrap.js",
+      "wwwroot/js/handlebars.js",
+      "wwwroot/js/chart.js",
+      "wwwroot/js/chartjs-adapter-moment.js",
+      "wwwroot/js/popper.js",
+      "wwwroot/js/bootstrap4.5.2.min.js",
+      "wwwroot/js/bootstrap-datetimepicker.js",
+      "wwwroot/js/daterangepicker.js",
+      "wwwroot/js/typed.umd.js",
+      "wwwroot/js/dataTables.js",
+      "wwwroot/js/sweetalert2.all.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/pace.min.js",
+    "inputFiles": [
+      "wwwroot/js/pace.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/modernizr-2.8.3.min.js",
+    "inputFiles": [
+      "wwwroot/js/modernizr-2.8.3.js"
+    ]
+  }
+]
