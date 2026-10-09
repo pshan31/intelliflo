@@ -1,0 +1,139 @@
+﻿@page
+@model IndexModel
+@using IntelliFloCore.Ingestion
+
+<div class="container p-4">
+    <div class="mb-3">
+        <h2 class="mb-2">Search</h2>
+        <div class="container-fluid m-0 p-0">
+            <div class="row">
+                <div class="col">
+                    <div class="input-group">
+                        <textarea id="taSearch" class="form-control" rows="1" placeholder="Enter search here ...." oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+                        <div class="dropdown">
+                            <div class="btn btn-secondary dropdown-toggle" type="button" id="daterange">
+                                Last 15 minutes
+                            </div>
+                            @* <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Last 15 minutes
+                            </button>
+                            <div id="ddSearchMode" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" data-mode="0" data-val="15m" data-text="Last 15 minutes" href="#">Last 15 minutes</a>
+                                <a class="dropdown-item" data-mode="0" data-val="30m" data-text="Last 30 minutes" href="#">Last 30 minutes</a>
+                                <a class="dropdown-item" data-mode="0" data-val="1h" data-text="Last hour" href="#">Last hour</a>
+                                <a class="dropdown-item" data-mode="0" data-val="5h" data-text="Last 5 hours" href="#">Last 5 hours</a>
+                                <a class="dropdown-item" data-mode="0" data-val="24h" data-text="Last 24 hours" href="#">Last 24 hours</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item custom-range" data-mode="1" href="#">Custom range</a>
+                            </div> *@
+                        </div>
+                        <div>
+                            <button id="btnSearchNow" class="btn btn-info btn-md" type="button"><i class="fas fa-search"></i> Search Now</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom-range-inputs">
+            <input type="text" id="txtCustomRange" class="form-control float-right" name="datetimes" />
+        </div>
+
+    </div>
+
+
+
+
+    <div class="accordion mb-2" id="accordionExample">
+        <div class="card border ">
+            <div class="accordian-item" id="headingTwo">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Tool Insights »
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="card border mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Server Usage</h5>
+                                    <h2 class="card-subtitle mb-0 text-body-secondary text-warning">@ViewData["Size"] Used</h2>
+                                    <h6 class="mt-0">@ViewData["FreeSpace"] Disk Free</h6>
+                                    <button class="mt-2 btn btn-danger">Cleanup Old Logs</button> <button class="mt-2 btn btn-warning">Lag Info</button>
+                                </div>
+                            </div>
+
+                            <div class="card border text-white bg-warning">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0">Ingestion Status <span class="badge badge-success">RUNNING</span></h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+
+                            <div class="card text-white bg-secondary mb-3">
+                                <div class="card-header">Ingest Filters</div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Enabled Filter</h5>
+                                    <select id="selEnabledFilter" class="custom-select">
+                                        <option selected>Open this select menu</option>
+                                        @foreach (var item in (List<IngestFilters>)@ViewData["Filters"])
+                                        {
+                                            <option value="@item.Id">@item.Name</option>
+                                        }
+                                    </select>
+                                    <p class="card-text mt-2">Filters will instruct IntelliFlo Ingestor in filtering logs before storing. This helps in optimized storage.</p>
+
+                                    <button class="btn btn-sm btn-outline-dark"><i class="fa fa-edit"></i> Edit Details</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <div class="col-lg-5">
+
+                            <div class="card text-white bg-dark">
+                                <div class="card-header">How to Search?</div>
+                                <div class="card-body mt-4 pt-4">
+                                    <p class="card-text pb-4">If you are not familiar with the search features, or want to learn more, or see your available data, go through the below tutorial.</p>
+                                    <br />
+                                    <button class="btn btn-sm btn-primary"><i class="fa fa-question"></i> Learn Now</button>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Events</a>
+            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Visualization</a>
+        </div>
+    </nav>
+
+    <div class="tab-content mb-4 pb-3" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div id="tableDiv"></div>
+        </div>
+
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div>
+                <canvas class="visualization" id="myChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>

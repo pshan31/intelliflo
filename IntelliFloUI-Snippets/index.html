@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log Query Interface</title>
+  <link href="public/bootstrap.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+  <style>
+	
+.fullscreen {
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	background-color: #1e2b37;
+	color: white;
+	z-index: 1000;
+}
+.center {
+    position: absolute;
+    width: 500px;
+	text-align: center;
+    height: 50px;
+    top: 50%;
+    left: 50%;
+    margin-left: -250px; /* margin is -0.5 * dimension */
+    margin-top: -150px; 
+	font-size:80px;
+}​
+
+    .query-form {
+      padding: 20px;
+      border-bottom: 1px solid #ddd; /* Add border between query and results */
+    }
+    .form-control {
+      border-radius: 4px;
+    }
+    .btn-search {
+      background-color: #007bff;
+      border-color: #007bff;
+      color: #fff;
+      border-radius: 4px;
+    }
+    .query-results {
+      padding: 20px;
+      border-radius: 0 0 8px 8px; /* Rounded corners only on bottom */
+    }
+    .query-results th {
+      background-color: #007bff; /* Header background color */
+      color: #fff; /* Header text color */
+    }
+    .datepicker {
+      z-index: 1051 !important;
+    }
+    .custom-range-wrapper {
+      display: flex;
+      align-items: center;
+    }
+    .custom-range-inputs {
+      display: none;
+      margin-left: 10px;
+    }
+    .custom-range-inputs input {
+      width: 150px;
+    }
+	
+	#ele b {
+	     color: #6e9fa5 !important;
+	 }
+	
+	
+  </style>
+</head>
+<body>
+
+<div class="fullscreen">
+    <div class="center"><span id="ele"></span></div>
+</div>
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/IntelliFlo/iui">Intelli<strong class="text-warning">Flo</strong></a>
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li><a class="nav-link" href="/IntelliFlo/iui">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <div class="container p-4">
+<div class="mb-3">
+    <h2 class="mb-2">Search</h2>
+	<div class="container-fluid m-0 p-0">
+		<div class="row">
+		<div class="col">
+		<div class="input-group">
+        <textarea id="taSearch" class="form-control" rows="1" placeholder="Enter search here ...." oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'></textarea>
+<div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Select Time Range
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Last 15 minutes</a>
+            <a class="dropdown-item" href="#">Last 30 minutes</a>
+            <a class="dropdown-item" href="#">Last hour</a>
+            <a class="dropdown-item" href="#">Last 24 hours</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item custom-range" href="#">Custom range</a>
+          </div>
+        </div>
+		<div>
+          <button id="btnSearchNow" class="btn btn-info btn-md" type="button"><i class="fas fa-search"></i> Search Now</button>
+        
+      </div>
+      </div>
+		</div>
+		</div>		
+	</div>
+	
+<div class="custom-range-inputs">
+          <input type="text" class="form-control datepicker" placeholder="From">
+          <input type="text" class="form-control datepicker" placeholder="To">
+          <button class="btn btn-primary">Apply</button>
+        </div>
+		
+		</div>
+		
+		
+		
+		
+		<div class="accordion mb-2" id="accordionExample">
+  <div class="card border ">
+    <div class="accordian-item" id="headingTwo">
+      <h2 class="mb-0">
+        <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Tool Insights »
+        </button>
+      </h2>
+    </div>
+    <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
+      <div class="card-body">
+        
+		<div class="row">
+		<div class="col-lg-3">
+		<div class="card border">
+		  <div class="card-body">
+			<h5 class="card-title">Server Usage</h5>
+			<h1 class="card-subtitle mb-0 text-body-secondary text-warning">15 GB Used</h1>
+			<h6 class="mt-0">3 GB Disk Free</h6>
+			<button class="mt-2 btn btn-danger">Cleanup Old Logs</a>
+		  </div>
+		</div>		
+		</div>
+		<div class="col-lg-4">
+		
+		<div class="card text-white bg-secondary mb-3">
+  <div class="card-header">Ingest Filters</div>
+  <div class="card-body">
+    <h5 class="card-title">Enabled Filter</h5>
+	<select class="custom-select">
+	  <option selected>Open this select menu</option>
+	  <option value="1">One</option>
+	  <option value="2">Two</option>
+	  <option value="3">Three</option>
+	</select>
+    <p class="card-text mt-2">Filters will instruct IntelliFlo Ingestor in filtering logs before storing. This helps in optimized storage.</p>
+	
+      <button class="btn btn-sm btn-outline-dark"><i class="fa fa-edit"></i> Edit Details</button>
+  </div>
+</div>
+
+
+		</div>
+		
+		<div class="col-lg-5">
+		
+		<div class="card text-white bg-dark">
+  <div class="card-header">How to Search?</div>
+  <div class="card-body mt-4 pt-4">
+    <p class="card-text pb-4">If you are not familiar with the search features, or want to learn more, or see your available data, go through the below tutorial.</p>
+	<br/>
+      <button class="btn btn-sm btn-primary"><i class="fa fa-question"></i> Learn Now</button>
+  </div>
+</div>
+
+
+		</div>
+		</div>
+		
+		
+      </div>
+    </div>
+  </div>
+</div>
+		
+		
+		<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Events</a>
+    <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Visualization</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+	<nav class="mt-2" aria-label="Page navigation example">
+  <ul class="pagination justify-content-end">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+	<table class="table table-striped table-bordered table-sm table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th width="50" scope="col"><i class="fa fa-info"></i></th>
+      <th width="250" scope="col">Time</th>
+      <th scope="col">Event</th>
+    </tr>
+  </thead>
+  <tbody id="table-body">   
+  </tbody>
+</table>
+	<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-end">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">Next</a>
+    </li>
+  </ul>
+</nav>
+  </div>
+  
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+  </div>
+</div>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+  <script src="public/handlebars.js"></script>
+  <link href="public/bootstrap.css" rel="stylesheet">
+  
+  
+	<script id="row-template" type="text/x-handlebars-template">
+		<tr>
+		<td>»</td>
+		<td>{{date}}</td>
+		<td>{{rawMessage}}
+		<div>
+		{{#each tags}}
+			<span class="mr-1 badge badge-primary">{{key}} = {{value}}</span>
+		{{/each}}			
+		</div>
+		</td>
+		</tr>
+	</script>
+	
+  <script>
+	setTimeout(myFunction, 1000);
+	function myFunction() {
+		$(".fullscreen").hide();
+	}
+	
+    $('.datepicker').datepicker({
+		format: 'yyyy-mm-dd',
+		todayHighlight: true,
+		autoclose: true
+    });
+
+	$('.custom-range').click(function(){
+		$('.custom-range-inputs').toggle();
+	});
+	
+	var typed = new Typed('#ele', {
+		strings: ['Welcome to Intelli<b>Flo</b>'],
+		typeSpeed: 30,
+	});
+	$(document).ready(function() {
+	
+	$("#btnSearchNow").click(function(){
+		$("#table-body").html("");
+		$.ajax({
+			url: 'https://localhost:44367/services/query/process',
+			type: 'POST',
+			data: $("#taSearch").val(),
+			success: function(response) {	
+				$.each(response, function(index, item) {
+					var source = document.getElementById("row-template").innerHTML;
+					var template = Handlebars.compile(source);
+					var context = { date: item.date, rawMessage: item.rawMessage, tags: item.tags };
+					var html = template(context);
+					$("#table-body").append(html);
+				});				
+			},
+			error: function(xhr, status, error) {
+				// Handle any errors
+				console.error('Error making POST request:', error);
+			}
+		});
+	});
+	});
+  </script>
+</body>
+</html>

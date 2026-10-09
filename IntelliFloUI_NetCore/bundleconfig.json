@@ -1,0 +1,34 @@
+[
+  {
+    "outputFileName": "wwwroot/css/bundle.css",
+    "inputFiles": [
+      "wwwroot/css/bootstrap.css",
+      "wwwroot/css/Site.css",
+      "wwwroot/css/flash.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/bootstrap.min.js",
+    "inputFiles": [
+      "wwwroot/js/bootstrap.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/handlebars.min.js",
+    "inputFiles": [
+      "wwwroot/js/handlebars.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/jquery-3.4.1.min.js",
+    "inputFiles": [
+      "wwwroot/js/jquery-3.4.1.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/modernizr-2.8.3.min.js",
+    "inputFiles": [
+      "wwwroot/js/modernizr-2.8.3.js"
+    ]
+  }
+]
